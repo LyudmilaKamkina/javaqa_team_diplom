@@ -3,6 +3,8 @@ package ru.netology;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 public class PlayerTest {
 
     GameStore store = new GameStore();
@@ -17,7 +19,6 @@ public class PlayerTest {
         Player player = new Player("Petya");
         player.installGame(game1);
         player.play(game1, 3);
-
         int expected = 3;
         int actual = player.sumGenre(game1.getGenre());
         assertEquals(expected, actual);

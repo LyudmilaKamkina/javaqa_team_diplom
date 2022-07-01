@@ -1,6 +1,7 @@
 package ru.netology;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -13,6 +14,7 @@ public class PlayerTest {
     Game game3 = store.publishGame("Сибирь", "Квест");
     Game game4 = store.publishGame("Civilization V", "Стратегия");
     Game game5 = store.publishGame("Stronghold", "Стратегия");
+
     @Test
     public void shouldSumGenreIfOneGame() {
 
@@ -83,7 +85,6 @@ public class PlayerTest {
 
         Player player = new Player("Petya");
         player.installGame(game1);
-        player.play(game5, 7);
 
         assertThrows(RuntimeException.class, () -> {
             player.play(game5, 7);

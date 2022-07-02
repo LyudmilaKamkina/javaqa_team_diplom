@@ -149,4 +149,13 @@ public class PlayerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void shouldChooseGameWithLongTimeNoGenre() {
+        Player player = new Player("Petya");
+
+        Game expected = null;
+        Game actual = player.mostPlayerByGenre("Симулятор");
+        assertEquals(expected, actual);
+    }
+
 }

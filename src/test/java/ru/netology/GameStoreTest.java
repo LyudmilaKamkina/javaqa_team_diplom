@@ -15,7 +15,6 @@ public class GameStoreTest {
         Game game = store.publishGame("Нетология Баттл Онлайн", "Аркады");
         assertTrue(store.containsGame(game));
     }
-
     @Test
     public void shouldCheckContainsGame() {
         Game[] gamesTest = new Game[5];
@@ -40,7 +39,7 @@ public class GameStoreTest {
 
     @ParameterizedTest
     @CsvSource({"0, 0, 0, 0",
-            "1, 2, 3, 6"})
+                "1, 2, 3, 6"})
     public void shoulAddPlayedTime(int hours1, int hours2, int hours3, int expected) {
         Player player1 = new Player("Vasya");
         store.addPlayTime("Vasya", hours1);
@@ -92,7 +91,6 @@ public class GameStoreTest {
         store.addPlayTime("Vasya", 0);
         assertEquals(7, store.getSumPlayedTime());
     }
-
 
     @Test
     public void shouldShowSumTimeTwoPlayersOnePlayerPlayedNullTime() {

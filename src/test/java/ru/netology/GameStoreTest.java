@@ -3,12 +3,14 @@ package ru.netology;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class GameStoreTest {
     GameStore store = new GameStore();
 
     @Test
-    public void shouldAddGame() {
+    public void shouldAddOneGame() {
         Game game = store.publishGame("Нетология Баттл Онлайн", "Аркады");
         assertTrue(store.containsGame(game));
     }
@@ -33,6 +35,18 @@ public class GameStoreTest {
     public void shouldCheckContainsGameNull() {
         Game game = new Game("Нетология Баттл Онлайн", "Аркады", store);
         assertFalse(store.containsGame(game));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"0, 0, 0, 0",
+            "1, 2, 3, 6",
+            "1, -5, 2, 3"})
+    public void shoulAddPlayedTime(int hours1, int hours2, int hours3, int expected) {
+        Player player1 = new Player("Vasya");
+        store.addPlayTime("Vasya", hours1);
+        store.addPlayTime("Vasya", hours2);
+        store.addPlayTime("Vasya", hours3);
+        assertEquals(expected, store.getSumPlayedTime());
     }
 
     @Test
@@ -66,11 +80,53 @@ public class GameStoreTest {
     }
 
     @Test
-    public void shoulShowSumTime() {
+    public void shouldShowSumTimeNoExistPlayers() {
+        assertEquals(0, store.getSumPlayedTime());
+    }
+
+    @Test
+    public void shouldShowSumTimeOnePlayer() {
+        Player player1 = new Player("Vasya");
+        store.addPlayTime("Vasya", 3);
+        store.addPlayTime("Vasya", 4);
+        store.addPlayTime("Vasya", 0);
+        assertEquals(7, store.getSumPlayedTime());
+    }
+
+    @Test
+    public void shouldShowSumTimeOnePlayerNegativeTime() {
+        Player player1 = new Player("Vasya");
+        store.addPlayTime("Vasya", 3);
+        store.addPlayTime("Vasya", -4);
+        store.addPlayTime("Vasya", 0);
+        assertEquals(3, store.getSumPlayedTime());
+    }
+
+    @Test
+    public void shouldShowSumTimeTwoPlayersOnePlayerPlayedNullTime() {
         Player player1 = new Player("Vasya");
         Player player2 = new Player("Petya");
         store.addPlayTime("Vasya", 3);
-        store.addPlayTime("Petya", 4);
-        assertEquals(7, store.getSumPlayedTime());
+        store.addPlayTime("Petya", 0);
+        assertEquals(3, store.getSumPlayedTime());
     }
+
+    @Test
+    public void shouldShowSumTimeTwoPlayersNotNullTime() {
+        Player player1 = new Player("Vasya");
+        Player player2 = new Player("Petya");
+        store.addPlayTime("Vasya", 3);
+        store.addPlayTime("Petya", 0);
+        assertEquals(3, store.getSumPlayedTime());
+    }
+
+    @Test
+    public void shouldShowSumTimeTwoPlayersOnePlayerNegativeTime() {
+        Player player1 = new Player("Vasya");
+        Player player2 = new Player("Petya");
+        store.addPlayTime("Vasya", 3);
+        store.addPlayTime("Petya", -4);
+        assertEquals(3, store.getSumPlayedTime());
+    }
+
 }

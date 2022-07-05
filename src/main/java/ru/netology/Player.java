@@ -1,6 +1,7 @@
 package ru.netology;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Player {
     private String name;
@@ -65,29 +66,21 @@ public class Player {
      */
     public Game mostPlayerByGenre(String genre) {
         Map<Game, Integer> oneGenre = new HashMap<>();
+        Game mostPlayedGame = null;
         for (Game game : playedTime.keySet()) {
             if (game.getGenre().equals(genre)) {
                 oneGenre.put(game, playedTime.get(game));
             }
         }
-        if (oneGenre.isEmpty()) {
-            return null;
-        }
-        Integer[] count = new Integer[oneGenre.size()];
-        int i = 0;
-        for (Game game : oneGenre.keySet()) {
-            count[i] = oneGenre.get(game);
-            i++;
-        }
-        Arrays.sort(count);
-        Game mostPlayedGame = null;
-        Integer maxValue = count[oneGenre.size() - 1];
-        if (maxValue == 0) {
-            return null;
-        }
-        for (Game game : oneGenre.keySet()) {
-            if (oneGenre.get(game).equals(maxValue)) {
-                mostPlayedGame = game;
+        if (!oneGenre.isEmpty()) {
+            Map<Game, Integer> result = new LinkedHashMap<>();
+            Stream<Map.Entry<Game, Integer>> tmp = oneGenre.entrySet().stream();
+            tmp.sorted(Map.Entry.comparingByValue())
+                    .forEach(e -> result.put(e.getKey(), e.getValue()));
+            Integer maxValue = new LinkedList<Integer>(result.values()).getLast();
+            if (maxValue != 0) {
+                Game[] key = result.keySet().toArray(new Game[result.size()]);
+                mostPlayedGame = key[key.length - 1];
             }
         }
         return mostPlayedGame;
